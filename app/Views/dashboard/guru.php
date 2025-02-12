@@ -1,0 +1,134 @@
+<div class="row">
+    <div class="col-md-12">
+        <h4 class="card-title fw-bold">Selamat Datang, <?= session('nama'); ?></h4>
+        <br>
+        <div class="row mb-3">
+            <div class="col-md-4 stretch-card grid-margin grid-margin-md-0">
+                <div class="card">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <p class="text-muted">Data Jadwal</p>
+                        <div class="d-flex justify-content-between align-items-center mb-2 text-primary">
+                            <h3 class="mb-">Jumlah Jadwal</h3>
+                            <h3 class="mb-"><?= $jumlah_jadwal; ?></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 stretch-card grid-margin grid-margin-md-0">
+                <div class="card">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <p class="text-muted">Data Nilai</p>
+                        <div class="d-flex justify-content-between align-items-center mb-2 text-success">
+                            <h3 class=" mb-">Sudah Nilai</h3>
+                            <h3 class="mb-"><?= $jumlah_nilai['sudah_nilai']; ?></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 stretch-card grid-margin grid-margin-md-0">
+                <div class="card">
+                    <div class="card-body d-flex flex-column justify-content-between text-danger">
+                        <p class="text-muted">Data Nilai</p>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h3 class="mb-">Belum Nilai</h3>
+                            <h3 class="mb-"><?= $jumlah_nilai['belum_nilai']; ?></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="table-responsive pt-3">
+                        <h4 class="card-title ps-3">Data Jadwal</h4>
+                        <table class="table">
+
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Mapel</th>
+                                    <th>Kelas</th>
+                                    <th>Jam Ke</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $no = 1;
+                                foreach ($jadwal as $row) {
+                                    $jamke = $row['jam_ke'] ? 'Jam ke ' . $row['jam_ke'] . ' : ' . get_jamke($row['jam_ke']) : '';
+
+                                ?>
+                                    <tr>
+                                        <td><?= $no++; ?></td>
+                                        <td><?= $row['nama_mapel']; ?></td>
+                                        <td><?= $row['nama_kelas']; ?></td>
+                                        <td><?= $jamke; ?></td>
+                                    </tr>
+                                <?php } ?>
+                                <tr>
+                                    <td colspan="4">
+                                        <a href="<?= base_url('jadwal'); ?>">Lihat selengkapnya..</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="table-responsive pt-3">
+                        <h4 class="card-title ps-3">Data Nilai</h4>
+                        <table class="table">
+
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Mapel</th>
+                                    <th>Kelas</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $no = 1;
+                                foreach ($jadwal as $row) {
+                                    $jamke = $row['jam_ke'] ? 'Jam ke ' . $row['jam_ke'] . ' : ' . get_jamke($row['jam_ke']) : '';
+                                    $mapel_id = $row['mapel_id'];
+                                    $kelas_id = $row['kelas_id'];
+                                    $nama_kelas = $row['nama_kelas'];
+                                    $tahun_id = $row['tahun_ajaran_id'];
+                                    $check = $mnilai->get_check_data($kelas_id, $nama_kelas, $mapel_id, session('id_guru'));
+
+                                ?>
+                                    <tr>
+                                        <td><?= $no++; ?></td>
+                                        <td><?= $row['nama_mapel']; ?></td>
+                                        <td><?= $row['nama_kelas']; ?></td>
+                                        <td><?= $check['aksi'] == 0 ? '<i class="fa fa-close text-danger"></i>' : '<i class="fa fa-check text-success"></i>'; ?></td>
+                                    </tr>
+                                <?php } ?>
+                                <tr>
+                                    <td colspan="4">
+                                        <a href="<?= base_url('nilai'); ?>">Lihat selengkapnya..</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<?= $this->section('js'); ?>
+<script>
+    // $('#example').DataTable()
+</script>
+
+<?= $this->endSection(); ?>
