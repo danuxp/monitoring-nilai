@@ -93,7 +93,7 @@ class MJadwal extends Model
     public function jumlah_jadwal($id_guru, $id_tahun = '')
     {
         $tahun_ajaran = $this->db->table('tahun_ajaran')->where('status', 1)->get()->getRowArray();
-        if ($id_tahun == '') {
+        if ($id_tahun != '') {
             $id_tahun = $tahun_ajaran['id'];
         }
         $builder = $this->db->table($this->table);
